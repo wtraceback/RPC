@@ -4,13 +4,13 @@ import tcpserver
 
 class RPCStub(object):
     def __init__(self):
-        self.funs = {}
+        self.funcs = {}
 
     def register_function(self, fn, name=None):
         """Server 端方法的注册，已注册的方法可以在 Client 端调用"""
         if name is None:
             name = fn.__name__
-        self.funs[name] = fn
+        self.funcs[name] = fn
 
 
 class JSONRPC(object):
@@ -23,13 +23,16 @@ class JSONRPC(object):
 
     def call_method(self):
         """根据解析的数据，调用对应的方法"""
-        method_name = self.data['method_name']
-        method_args = self.data['method_args']
-        method_kwargs = self.data['method_kwargs']
+        method_name = self.data.get('method_name', '')
+        method_args = self.data.get('method_args', None)
+        method_kwargs = self.data.get('method_kwargs', None)
 
-        res = self.funs[method_name](*method_args, **method_kwargs)
+        if (method_name in self.funcs):
+            res = self.funcs[method_name](*method_args, **method_kwargs)
+        else:
+            res = 'Please use the correct function'
         data = { "res": res }
-        return json.dumps(data).encode('utf-8')
+        return json.dumps(data)
 
 
 class RPCServer(tcpserver.TCPServer, JSONRPC, RPCStub):

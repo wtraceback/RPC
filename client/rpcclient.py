@@ -3,21 +3,18 @@ import tcpclient
 
 
 class RPCStub(object):
-    def __init__(self):
-        pass
-
     def __getattr__(self, item):
-        def fn(*args, **kwargs):
+        def func(*args, **kwargs):
             d = {
                 'method_name': item,
                 'method_args': args,
                 'method_kwargs': kwargs
             }
-            self.send(json.dumps(d))
-            return self.receive()
+            self.send(json.dumps(d))        # 发送数据到 Server 端
+            return self.receive(1024)       # 接收 Server 返回的执行结果
 
-        setattr(self, item, fn)
-        return fn
+        setattr(self, item, func)
+        return func
 
 
 class RPCClient(tcpclient.TCPClient, RPCStub):

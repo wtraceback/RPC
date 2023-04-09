@@ -8,6 +8,6 @@ def test(*args, **kwargs):
 
 
 if __name__ == '__main__':
-    t = rpcserver.RPCServer()
-    t.register_function(test)       # 注册函数
-    t.loop('127.0.0.1', 5000)       # 要监听的 IP 和端口
+    s = rpcserver.RPCServer()
+    s.register_function(test)       # 注册函数
+    s.loop('127.0.0.1', 5000)       # 要监听的 IP 和端口
