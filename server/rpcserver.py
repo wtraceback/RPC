@@ -2,6 +2,17 @@ import json
 import tcpserver
 
 
+class RPCStub(object):
+    def __init__(self):
+        self.funs = {}
+
+    def register_function(self, fn, name=None):
+        """Server 端方法的注册，已注册的方法可以在 Client 端调用"""
+        if name is None:
+            name = fn.__name__
+        self.funs[name] = fn
+
+
 class JSONRPC(object):
     def __init__(self):
         self.data = None
@@ -16,19 +27,18 @@ class JSONRPC(object):
         method_args = self.data['method_args']
         method_kwargs = self.data['method_kwargs']
 
-        res = getattr(self, method_name)(*method_args, **method_kwargs)
+        res = self.funs[method_name](*method_args, **method_kwargs)
         data = { "res": res }
         return json.dumps(data).encode('utf-8')
 
-    def test(self, *args, **kwargs):
-        print("test: args={}, kwargs={}".format(args, kwargs))
-        return "rpc 远程调用的函数成功执行，返回对应的值"
 
-
-class RPCServer(tcpserver.TCPServer, JSONRPC):
+class RPCServer(tcpserver.TCPServer, JSONRPC, RPCStub):
     def __init__(self):
-        # super(RPCServer, self).__init__() # python2
-        super().__init__()    # python3
+        # super(RPCServer, self).__init__() # 默认初始化 TCPServer
+        # super().__init__()                # 默认初始化 TCPServer
+        tcpserver.TCPServer.__init__(self)
+        JSONRPC.__init__(self)
+        RPCStub.__init__(self)
 
     def loop(self, host='0.0.0.0', port=5000):
         self.bind_listen(host, port)
