@@ -2,13 +2,11 @@ import socket
 
 
 class TCPClient(object):
-    def __init__(self, host='127.0.0.1', port=5000):
-        self.host = host
-        self.port = port
+    def __init__(self):
         self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def connect(self):
-        self.clientsocket.connect((self.host, self.port))
+    def connect(self, host='127.0.0.1', port=5000):
+        self.clientsocket.connect((host, port))
 
     def send(self, data):
         self.clientsocket.sendall(data.encode('utf-8'))

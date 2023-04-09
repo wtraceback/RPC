@@ -2,18 +2,13 @@ import socket
 
 
 class TCPServer(object):
-    def __init__(self, host='0.0.0.0', port=5000):
-        self.host = host
-        self.port = port
-
+    def __init__(self):
         # 初始化 socket；socket.AF_INET 表示因特网 IPv4 地址族，SOCK_STREAM 表示使用 TCP 的 socket 类型
         self.serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def bind_listen(self):
+    def bind_listen(self, host, port):
         # 套接字绑定的 IP 与 端口
-        self.serversocket.bind((self.host, self.port))
-        print('Server start at', '{}:{}.'.format(self.host, self.port))
-        print("=============================")
+        self.serversocket.bind((host, port))
         # 将套接字变为一个服务区套接字，进行监听，数字 5 将端口上的等待队列长度限制为 5，即超过 5 个的请求将被拒绝。
         self.serversocket.listen(5)
 
