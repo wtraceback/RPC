@@ -26,11 +26,11 @@ $ cd RPC
 
 
 # 服务器端
-cd server           # 切换进 server 目录
-python main.py      # 启动服务器
+$ cd server           # 切换进 server 目录
+$ python main.py      # 启动服务器
 
 
 # 客户端
-cd client           # 切换进 client 目录
-python main.py      # 启动客户端，向服务器端发送请求并接收响应
+$ cd client           # 切换进 client 目录
+$ python main.py      # 启动客户端，向服务器端发送请求并接收响应
 ```
