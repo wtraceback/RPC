@@ -34,8 +34,8 @@ class JSONRPC(object):
 
 class RPCServer(tcpserver.TCPServer, JSONRPC, RPCStub):
     def __init__(self):
-        # super(RPCServer, self).__init__() # 默认初始化 TCPServer
-        # super().__init__()                # 默认初始化 TCPServer
+        # super(RPCServer, self).__init__() # 多继承的情况下，默认初始化 TCPServer
+        # super().__init__()                # 多继承的情况下，默认初始化 TCPServer
         tcpserver.TCPServer.__init__(self)
         JSONRPC.__init__(self)
         RPCStub.__init__(self)
@@ -43,7 +43,6 @@ class RPCServer(tcpserver.TCPServer, JSONRPC, RPCStub):
     def loop(self, host='0.0.0.0', port=5000):
         self.bind_listen(host, port)
         print('Server start at', '{}:{}.'.format(host, port))
-
         while True:
             self.accept_receive_close()
 

@@ -14,4 +14,4 @@ class TCPClient(object):
     def receive(self):
         r = self.clientsocket.recv(1024)
         r = r.decode('utf-8')
-        print("response is: {}".format(r))
+        return r
