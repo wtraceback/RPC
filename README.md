@@ -1,6 +1,6 @@
 # RPC
 
-基于 Python Socket 模块实现的 RCP
+基于 Python Socket 模块实现的 RPC
 
 
 ## 目录结构
