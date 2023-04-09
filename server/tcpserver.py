@@ -16,9 +16,6 @@ class TCPServer(object):
         # 接收外部连接请求，当有客户端过来连接的时候, serversocket.accept 函数就会返回 2 个值
         clientsocket, address = self.serversocket.accept()
         r = clientsocket.recv(1024)
-        print("r = {}".format(r.decode('utf-8')))
-
-        response = 'tcp 服务器端接收到请求后，返回的响应'
-        clientsocket.sendall(response.encode('utf-8'))            # 用 sendall 发送给客户端
-
+        data = self.process_request(r)
+        clientsocket.sendall(data)            # 用 sendall 发送给客户端
         clientsocket.close()
